@@ -7,6 +7,8 @@
 #Future additions would be a nice mailing or SMS function that notifies the 
 #administrator, as well as more detailed info about the errors encountered.
 
+#Alex Hughes, London 2012
+
 check_site () {
 	log="site: "
 	log+=$1
