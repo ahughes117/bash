@@ -4,10 +4,33 @@
 #This function takes the site's url as an argument and checks the curl command
 #exit code. If it's different than 0, it assumes that the site is down.
 
-#Future additions would be a nice mailing or SMS function that notifies the 
-#administrator, as well as more detailed info about the errors encountered.
+#This version comes with a mailing function. Make sure sendEmail is installed 
+#along with the appropriate libraries below:
+
+#sudo apt-get install sendEmail
+#sudo apt-get install libio-socket-ssl-perl libnet-ssleay-perl
 
 #Alex Hughes, London 2012
+
+notify() {
+	
+	#email credentials
+	username="aUsername@gmail.com"
+	password="aPassword"
+	host="smtp.gmail.com:587"
+	recipient="aRecipient@gmail.com"
+	subject="Website Monitor Alert"
+	
+	#preparing message
+	content="Site: "
+	content+=$1
+	content+=" is down and crying. || "
+	content+=$(date)
+	
+	#sending the email
+	sendEmail -v -f $username -s $host -xu $username -xp $password -t $recipient -o tls=yes -u $subject -m $content
+}
+	
 
 check_site () {
 	log="site: "
@@ -18,7 +41,7 @@ check_site () {
 		log+="DOWN || "
 		log+=$(date)
 		echo "*******DOWN*******"
-		#TODO mailing function
+		notify $1
 	else
 		log+="UP || "
 		log+=$(date)
